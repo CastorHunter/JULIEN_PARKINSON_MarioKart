@@ -8,7 +8,7 @@ public class CarControler : MonoBehaviour
     [Header("Variables")]
     [SerializeField]
     private Rigidbody _rb; // rigidbody du gameobject
-    private float _speed, _accelerationLerpInterpolator, _speedPower, _rotationInput; //vitesse, stockage de l'acceleration au moment meme, input qui indique si le joueur veut tourner et dans quel sens
+    private float _speed, _accelerationLerpInterpolator, _speedPower, _rotationInput, _rotationFactor; //vitesse, stockage de l'acceleration au moment meme, input qui indique si le joueur veut tourner et dans quel sens, facteur de rotatation
     [SerializeField]
     private float _speedMax = 3, _accelerationFactor, _desaccelerationFactor, _rotationSpeed = 0.5f; //vitesse maximale, facteur d'acceleration, facteur de desacceleration, vitesse de rotation
     private bool _isAccelerating, _isSlowing, _canMove = true, _isCrazyRotating = false; //indique si le joueur est en train d'accelerer, indique si le joueur est en train de freiner, indique si le joueur peut bouger, indique si le joueur tourne du au stun
@@ -35,15 +35,6 @@ public class CarControler : MonoBehaviour
 
     void Update()
     {
-
-        if (Input.GetKey(KeyCode.LeftArrow) && _canMove == true) //tourne a gauche
-        {
-            transform.eulerAngles += Vector3.down * _rotationSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.RightArrow) && _canMove == true) //tourne a droite
-        {
-            transform.eulerAngles += Vector3.up * _rotationSpeed * Time.deltaTime;
-        }
         if (Input.GetKeyDown(KeyCode.Space)) //accelere
         {
             _isAccelerating = true;
@@ -111,7 +102,10 @@ public class CarControler : MonoBehaviour
             _speed = _accelerationCurve.Evaluate(_accelerationLerpInterpolator) * _speedMax * (_powerSpeedCurve.Evaluate(_speedPower) + 1); //change la vitesse en fonction de l'acceleration et de sa courbe
         }
 
-        transform.eulerAngles += Vector3.up * _rotationInput * Time.deltaTime * _rotationInput; //tourne (assurance que la camera ne tremble pas)
+        _rotationFactor = _speed*_rotationSpeed / 3; //definis le facteur de rotation comme le produit de la vitesse et de la vitesse de rotation/3
+        _rotationFactor = Mathf.Clamp(_rotationFactor, 20, 100); //clamp la valeur du facteur de rotation entre 20 et 100
+
+        transform.eulerAngles += Vector3.up * _rotationInput * Time.deltaTime * _rotationFactor; //tourne (assurance que la camera ne tremble pas)
         _rb.MovePosition(transform.position + transform.forward * _speed * Time.fixedDeltaTime);
     }
 
