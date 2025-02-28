@@ -27,7 +27,11 @@ public class CarControler : MonoBehaviour
     private string _inventoryItem = "";
     private List<string> _inventory = new List<string>() {"Trap", "Boost" };
     private int _index;
-
+    //PROF A VERIF
+    private float _terrainSpeedVariator;
+    [SerializeField]
+    private LayerMask _layerMask;
+    //
     void Start()
     {
 
@@ -74,6 +78,26 @@ public class CarControler : MonoBehaviour
         {
             transform.eulerAngles += Vector3.down * _rotationSpeed * 2.4f * Time.deltaTime;
         }
+
+        //PROF A VERIFIER ET BIEN COMPRENDRE
+        if (Physics.Raycast(transform.position, transform.up * -1, out var info, 1, _layerMask))
+        {
+
+            Terrain terrainBellow = info.transform.GetComponent<Terrain>();
+            if (terrainBellow != null)
+            {
+                _terrainSpeedVariator = terrainBellow.speedVariator;
+            }
+            else
+            {
+                _terrainSpeedVariator = 1;
+            }
+        }
+        else
+        {
+            _terrainSpeedVariator = 1;
+        }
+        //
     }
 
     private void FixedUpdate()
