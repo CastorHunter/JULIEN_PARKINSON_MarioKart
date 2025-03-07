@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class RoundManager : MonoBehaviour
@@ -15,7 +16,10 @@ public class RoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (_rounds == 3)
+        {
+            SceneManager.LoadScene(2);
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
