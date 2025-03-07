@@ -47,19 +47,6 @@ public class CarControler : MonoBehaviour
         {
             _isAccelerating = false;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow)) //freine
-        {
-            _isSlowing = true;
-            _isAccelerating = false;
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow)) //arrete de freiner
-        {
-            _isSlowing = false;
-            if (Input.GetKey(KeyCode.Space))
-            {
-                _isAccelerating = true;
-            }
-        }
         if (Input.GetKeyDown(KeyCode.Q) && _inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
         {
             //_inventoryItem = "";
@@ -102,7 +89,19 @@ public class CarControler : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        if (Input.GetKeyDown(KeyCode.DownArrow)) //freine
+        {
+            _isSlowing = true;
+            _isAccelerating = false;
+        }
+        if (Input.GetKeyUp(KeyCode.DownArrow)) //arrete de freiner
+        {
+            _isSlowing = false;
+            if (Input.GetKey(KeyCode.Space))
+            {
+                _isAccelerating = true;
+            }
+        }
         if (_isAccelerating && _canMove == true) //si le joueur accelere, augmente l'acceleration (sachant que cette augmentation ne peut pas depasser une certaine limite)
         {
             _accelerationLerpInterpolator += _accelerationFactor;
