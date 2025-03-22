@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class CarControler : MonoBehaviour
@@ -15,6 +14,10 @@ public class CarControler : MonoBehaviour
     private float _speedMax = 3, _accelerationFactor, _desaccelerationFactor, _rotationSpeed = 0.5f; //vitesse maximale, facteur d'acceleration, facteur de desacceleration, vitesse de rotation
     private bool _isAccelerating, _isSlowing, _canMove = true, _isCrazyRotating = false, _blockedByWall; //est en train d'accelerer, est en train de freiner, peut bouger, tourne du au stun, est bloqué par un mur
 
+    [Header("UI")]
+    [SerializeField]
+    private GameObject _bonusUI;
+
     [Header("Curves")]
     [SerializeField]
     private AnimationCurve _accelerationCurve; //courbe d'acceleration modifiee dans l'editeur
@@ -25,11 +28,12 @@ public class CarControler : MonoBehaviour
     public TrapBehavior TrapPrefab;
     public Transform SpawnOffset;
 
-    [Header("Inventory")]
+    //Inventory
     private string _inventoryItem = "";
     private List<string> _inventory = new List<string>() {"Trap", "Boost" };
     private int _index;
     private float _terrainSpeedVariator;
+
     [SerializeField]
     private LayerMask _WalllayerMask, _WinelayerMask;
     [SerializeField]
@@ -40,10 +44,6 @@ public class CarControler : MonoBehaviour
     private AudioSource _audioSource, _audioSource2;
     private bool _isPlaying;
 
-    [Header("UI")]
-    [SerializeField]
-    private Image _bonus1, _bonus2;
-
     [SerializeField]
     private string _rotationInputName;
     [SerializeField]
@@ -51,7 +51,7 @@ public class CarControler : MonoBehaviour
 
     void Start()
     {
-
+        _bonusUI.SetActive(false);
     }
 
     void Update()
@@ -89,11 +89,13 @@ public class CarControler : MonoBehaviour
         }
         if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
         {
+            _bonusUI.SetActive(false);
             _inventoryItem = "";
             SpeedPowerUp();
         }
         if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Trap") //pose un piege si le joueur en a en stock
         {
+            _bonusUI.SetActive(false);
             _inventoryItem = "";
             SpawnTrap();
         }
@@ -202,6 +204,7 @@ public class CarControler : MonoBehaviour
         _audioSource.PlayOneShot(_box, 2f);
         _index = UnityEngine.Random.Range(0, _inventory.Count);
         _inventoryItem = _inventory[_index];
+        _bonusUI.SetActive(true);
     }
 
     private void Stun() //empeche le joueur de bouger

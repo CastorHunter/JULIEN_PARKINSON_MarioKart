@@ -682,6 +682,7 @@ MonoBehaviour:
   _accelerationFactor: 0.01
   _desaccelerationFactor: 0.25
   _rotationSpeed: 100
+  _bonusUI: {fileID: 1695041789}
   _accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -4042,6 +4043,7 @@ MonoBehaviour:
   _accelerationFactor: 0.01
   _desaccelerationFactor: 0.25
   _rotationSpeed: 100
+  _bonusUI: {fileID: 491644523}
   _accelerationCurve:
     serializedVersion: 2
     m_Curve:
