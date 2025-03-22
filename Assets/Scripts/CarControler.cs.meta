@@ -3,7 +3,20 @@ guid: 26533734d1f96fa4899fb644a1bdb39d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _rb: {instanceID: 0}
+  - _bonusUI: {instanceID: 0}
+  - _speedUpImage: {fileID: 21300000, guid: d91513c510b9f3e46a500d0f4700ec3d, type: 3}
+  - _trapImage: {fileID: 21300000, guid: 872c6e16cdcee764192a52d415b785ba, type: 3}
+  - TrapPrefab: {instanceID: 0}
+  - SpawnOffset: {instanceID: 0}
+  - _bonk: {instanceID: 0}
+  - _yay: {instanceID: 0}
+  - _stunned: {instanceID: 0}
+  - _trap: {instanceID: 0}
+  - _box: {instanceID: 0}
+  - _audioSource: {instanceID: 0}
+  - _audioSource2: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

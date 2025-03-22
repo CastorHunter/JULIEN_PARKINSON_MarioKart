@@ -682,7 +682,9 @@ MonoBehaviour:
   _accelerationFactor: 0.01
   _desaccelerationFactor: 0.25
   _rotationSpeed: 100
-  _bonusUI: {fileID: 1695041789}
+  _bonusUI: {fileID: 1695041791}
+  _speedUpImage: {fileID: 21300000, guid: d91513c510b9f3e46a500d0f4700ec3d, type: 3}
+  _trapImage: {fileID: 21300000, guid: 872c6e16cdcee764192a52d415b785ba, type: 3}
   _accelerationCurve:
     serializedVersion: 2
     m_Curve:
@@ -4043,7 +4045,9 @@ MonoBehaviour:
   _accelerationFactor: 0.01
   _desaccelerationFactor: 0.25
   _rotationSpeed: 100
-  _bonusUI: {fileID: 491644523}
+  _bonusUI: {fileID: 491644525}
+  _speedUpImage: {fileID: 21300000, guid: d91513c510b9f3e46a500d0f4700ec3d, type: 3}
+  _trapImage: {fileID: 21300000, guid: 872c6e16cdcee764192a52d415b785ba, type: 3}
   _accelerationCurve:
     serializedVersion: 2
     m_Curve:
