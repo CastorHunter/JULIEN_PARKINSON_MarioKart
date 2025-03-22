@@ -739,7 +739,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  TrapPrefab: {fileID: 470519272957975017, guid: dee83e0e3c26e6a44a49bd370f8a07e4,
+  TrapPrefab: {fileID: -1569114599645016704, guid: dee83e0e3c26e6a44a49bd370f8a07e4,
     type: 3}
   SpawnOffset: {fileID: 2074908065}
   _layerMask:

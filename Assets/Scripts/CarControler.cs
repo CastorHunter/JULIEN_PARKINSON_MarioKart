@@ -46,8 +46,6 @@ public class CarControler : MonoBehaviour
 
     void Update()
     {
-        print(_isAccelerating);
-            //if (Physics.Raycast(transform.position, GetComponent<Rigidbody>().velocity, out var inf, _raycastDistance, _layerMask))
         if (Physics.Raycast(transform.position, transform.forward, out var inf, _raycastDistance, _layerMask))
         {
             StartCoroutine(HitWall());
@@ -81,12 +79,12 @@ public class CarControler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q) && _inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
         {
-            //_inventoryItem = "";
+            _inventoryItem = "";
             SpeedPowerUp();
         }
         if (Input.GetKeyDown(KeyCode.E) && _inventoryItem == "Trap") //pose un piege si le joueur en a en stock
         {
-            //_inventoryItem = "";
+            _inventoryItem = "";
             SpawnTrap();
         }
         if (_canMove == true)
@@ -188,7 +186,6 @@ public class CarControler : MonoBehaviour
         }
         if (other.CompareTag("MisteryCube")) //si le joueur touche une boite mystère, appelle la fonction correspondante
         {
-            Destroy(other.gameObject);
             ReceiveRandomItem();
         }
     }
