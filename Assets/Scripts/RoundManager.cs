@@ -16,7 +16,7 @@ public class RoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_rounds == 3)
+        if (_rounds == 5) //nombre de tour a faire pour gagner
         {
             SceneManager.LoadScene(2);
         }

@@ -11,7 +11,7 @@ public class CarControler : MonoBehaviour
     private float _speed, _accelerationLerpInterpolator, _speedPower, _rotationInput, _rotationFactor; //vitesse, stockage de l'acceleration au moment meme, input qui indique si le joueur veut tourner et dans quel sens, facteur de rotatation
     [SerializeField]
     private float _speedMax = 3, _accelerationFactor, _desaccelerationFactor, _rotationSpeed = 0.5f; //vitesse maximale, facteur d'acceleration, facteur de desacceleration, vitesse de rotation
-    private bool _isAccelerating, _isSlowing, _canMove = true, _isCrazyRotating = false; //indique si le joueur est en train d'accelerer, indique si le joueur est en train de freiner, indique si le joueur peut bouger, indique si le joueur tourne du au stun
+    private bool _isAccelerating, _isSlowing, _canMove = true, _isCrazyRotating = false, _blockedByWall; //est en train d'accelerer, est en train de freiner, peut bouger, tourne du au stun, est bloqué par un mur
 
     [Header("Curves")]
     [SerializeField]
@@ -31,6 +31,13 @@ public class CarControler : MonoBehaviour
     private float _terrainSpeedVariator;
     [SerializeField]
     private LayerMask _layerMask;
+    [SerializeField]
+    private float _raycastDistance;
+    [SerializeField]
+    private AudioClip _bonk, _yay, _stunned, _trap, _box;
+    [SerializeField]
+    private AudioSource _audioSource, _audioSource2;
+    private bool _isPlaying;
     //
     void Start()
     {
@@ -39,7 +46,32 @@ public class CarControler : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) //accelere
+        print(_isAccelerating);
+            //if (Physics.Raycast(transform.position, GetComponent<Rigidbody>().velocity, out var inf, _raycastDistance, _layerMask))
+        if (Physics.Raycast(transform.position, transform.forward, out var inf, _raycastDistance, _layerMask))
+        {
+            StartCoroutine(HitWall());
+        }
+        else
+        {
+            _blockedByWall = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) //freine
+        {
+            _isSlowing = true;
+            _isAccelerating = false;
+        }
+        if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S)) //arrete de freiner
+        {
+            _isSlowing = false;
+            if (Input.GetKey(KeyCode.Space) && _blockedByWall == false)
+            {
+                _isAccelerating = true;
+            }
+        }
+
+        if ((Input.GetKeyDown(KeyCode.Space) && _isSlowing == false) && _blockedByWall == false) //accelere
         {
             _isAccelerating = true;
         }
@@ -65,6 +97,16 @@ public class CarControler : MonoBehaviour
         {
             transform.eulerAngles += Vector3.down * _rotationSpeed * 2.4f * Time.deltaTime;
         }
+        if (_speed>1 && _isPlaying == false)
+        {
+            _isPlaying = true;
+            _audioSource2.Play();
+        }
+        else if (_speed<1 && _isPlaying == true)
+        {
+            _isPlaying = false;
+            _audioSource2.Pause();
+        }
 
         //PROF A VERIFIER ET BIEN COMPRENDRE
         if (Physics.Raycast(transform.position, transform.up * -1, out var info, 1, _layerMask))
@@ -89,19 +131,6 @@ public class CarControler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow)) //freine
-        {
-            _isSlowing = true;
-            _isAccelerating = false;
-        }
-        if (Input.GetKeyUp(KeyCode.DownArrow)) //arrete de freiner
-        {
-            _isSlowing = false;
-            if (Input.GetKey(KeyCode.Space))
-            {
-                _isAccelerating = true;
-            }
-        }
         if (_isAccelerating && _canMove == true) //si le joueur accelere, augmente l'acceleration (sachant que cette augmentation ne peut pas depasser une certaine limite)
         {
             _accelerationLerpInterpolator += _accelerationFactor;
@@ -130,15 +159,19 @@ public class CarControler : MonoBehaviour
 
         transform.eulerAngles += Vector3.up * _rotationInput * Time.deltaTime * _rotationFactor; //tourne (assurance que la camera ne tremble pas)
         _rb.MovePosition(transform.position + transform.forward * _speed * Time.fixedDeltaTime);
+
+        Mathf.Clamp(transform.rotation.x,-13,13); //clamp la valeur de la rotation pour eviter que le kart prenne des angles innapropries
     }
 
     public void SpeedPowerUp() //fonction qui definit un boost de vitesse
     {
+        _audioSource.PlayOneShot(_yay, 3f);
         _speedPower = 25;
     }
 
     public void SpawnTrap() //fonction fait apparaitre un piege
     {
+        _audioSource.PlayOneShot(_trap, 2f);
         Instantiate(TrapPrefab, SpawnOffset.position, SpawnOffset.rotation);
     }
 
@@ -162,12 +195,14 @@ public class CarControler : MonoBehaviour
 
     private void ReceiveRandomItem() //donne au joueur un item aleatoire
     {
+        _audioSource.PlayOneShot(_box, 2f);
         _index = UnityEngine.Random.Range(0, _inventory.Count);
         _inventoryItem = _inventory[_index];
     }
 
     private void Stun() //empeche le joueur de bouger
     {
+        _audioSource.PlayOneShot(_stunned);
         _canMove = false;
         _accelerationLerpInterpolator = 0;
         _speed = 0;
@@ -180,5 +215,15 @@ public class CarControler : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         _canMove = true;
         _isCrazyRotating = false;
+    }
+    private IEnumerator HitWall() //permet au joueur de bouger apres une duree definie
+    {
+        
+        _audioSource.PlayOneShot(_bonk);
+        _blockedByWall = true;
+        _isAccelerating = false;
+        _isSlowing = true;
+        yield return new WaitForSeconds(2f);
+        _isSlowing = false;
     }
 }
