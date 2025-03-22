@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class CarControler : MonoBehaviour
 {
@@ -27,10 +29,9 @@ public class CarControler : MonoBehaviour
     private string _inventoryItem = "";
     private List<string> _inventory = new List<string>() {"Trap", "Boost" };
     private int _index;
-    //PROF A VERIF
     private float _terrainSpeedVariator;
     [SerializeField]
-    private LayerMask _layerMask;
+    private LayerMask _WalllayerMask, _WinelayerMask;
     [SerializeField]
     private float _raycastDistance;
     [SerializeField]
@@ -38,7 +39,16 @@ public class CarControler : MonoBehaviour
     [SerializeField]
     private AudioSource _audioSource, _audioSource2;
     private bool _isPlaying;
-    //
+
+    [Header("UI")]
+    [SerializeField]
+    private Image _bonus1, _bonus2;
+
+    [SerializeField]
+    private string _rotationInputName;
+    [SerializeField]
+    private KeyCode _accelerateInputKey, _powerUpInputKey;
+
     void Start()
     {
 
@@ -46,7 +56,7 @@ public class CarControler : MonoBehaviour
 
     void Update()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out var inf, _raycastDistance, _layerMask))
+        if (Physics.Raycast(transform.position, transform.forward, out var inf, _raycastDistance, _WalllayerMask))
         {
             StartCoroutine(HitWall());
         }
@@ -63,33 +73,33 @@ public class CarControler : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S)) //arrete de freiner
         {
             _isSlowing = false;
-            if (Input.GetKey(KeyCode.Space) && _blockedByWall == false)
+            if (Input.GetKey(_accelerateInputKey) && _blockedByWall == false)
             {
                 _isAccelerating = true;
             }
         }
 
-        if ((Input.GetKeyDown(KeyCode.Space) && _isSlowing == false) && _blockedByWall == false) //accelere
+        if ((Input.GetKeyDown(_accelerateInputKey) && _isSlowing == false) && _blockedByWall == false) //accelere
         {
             _isAccelerating = true;
         }
-        if (Input.GetKeyUp(KeyCode.Space)) //arrete d'accelerer
+        if (Input.GetKeyUp(_accelerateInputKey)) //arrete d'accelerer
         {
             _isAccelerating = false;
         }
-        if (Input.GetKeyDown(KeyCode.Q) && _inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
+        if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
         {
             _inventoryItem = "";
             SpeedPowerUp();
         }
-        if (Input.GetKeyDown(KeyCode.E) && _inventoryItem == "Trap") //pose un piege si le joueur en a en stock
+        if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Trap") //pose un piege si le joueur en a en stock
         {
             _inventoryItem = "";
             SpawnTrap();
         }
         if (_canMove == true)
         {
-            _rotationInput = Input.GetAxis("Horizontal"); //verifie si le joueur tourne
+            _rotationInput = Input.GetAxis(_rotationInputName); //verifie si le joueur tourne
         }
         if (_isCrazyRotating == true) //tourne du a un stun
         {
@@ -106,10 +116,8 @@ public class CarControler : MonoBehaviour
             _audioSource2.Pause();
         }
 
-        //PROF A VERIFIER ET BIEN COMPRENDRE
-        if (Physics.Raycast(transform.position, transform.up * -1, out var info, 1, _layerMask))
+        if (Physics.Raycast(transform.position, transform.up * -1, out var info, 100, _WinelayerMask))
         {
-
             Terrain terrainBellow = info.transform.GetComponent<Terrain>();
             if (terrainBellow != null)
             {
@@ -124,7 +132,6 @@ public class CarControler : MonoBehaviour
         {
             _terrainSpeedVariator = 1;
         }
-        //
     }
 
     private void FixedUpdate()
@@ -149,7 +156,7 @@ public class CarControler : MonoBehaviour
 
         if (_canMove == true)// verifie que le joueur peut bouger
         {
-            _speed = _accelerationCurve.Evaluate(_accelerationLerpInterpolator) * _speedMax * (_powerSpeedCurve.Evaluate(_speedPower) + 1); //change la vitesse en fonction de l'acceleration et de sa courbe
+            _speed = _accelerationCurve.Evaluate(_accelerationLerpInterpolator) * _speedMax * (_powerSpeedCurve.Evaluate(_speedPower) + 1) * _terrainSpeedVariator; //change la vitesse en fonction de l'acceleration et de sa courbe
         }
 
         _rotationFactor = _speed*_rotationSpeed / 3; //definis le facteur de rotation comme le produit de la vitesse et de la vitesse de rotation/3
