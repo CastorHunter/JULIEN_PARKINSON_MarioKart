@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,8 @@ public class CarControler : MonoBehaviour
     [Header("UI")]
     [SerializeField]
     private Image _bonusUI;
+    [SerializeField]
+    private TextMeshProUGUI _controlText;
     [SerializeField]
     private Sprite _speedUpImage, _trapImage;
 
@@ -54,6 +57,7 @@ public class CarControler : MonoBehaviour
     void Start()
     {
         _bonusUI.enabled = false;
+        _controlText.enabled = false;
     }
 
     void Update()
@@ -92,12 +96,14 @@ public class CarControler : MonoBehaviour
         if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
         {
             _bonusUI.enabled = false;
+            _controlText.enabled = false;
             _inventoryItem = "";
             SpeedPowerUp();
         }
         if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Trap") //pose un piege si le joueur en a en stock
         {
             _bonusUI.enabled = false;
+            _controlText.enabled = false;
             _inventoryItem = "";
             SpawnTrap();
         }
@@ -122,7 +128,7 @@ public class CarControler : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.up * -1, out var info, 100, _WinelayerMask))
         {
-            Terrain terrainBellow = info.transform.GetComponent<Terrain>();
+            Ground terrainBellow = info.transform.GetComponent<Ground>();
             if (terrainBellow != null)
             {
                 _terrainSpeedVariator = terrainBellow.speedVariator;
@@ -206,6 +212,7 @@ public class CarControler : MonoBehaviour
         _audioSource.PlayOneShot(_box, 2f);
         _index = UnityEngine.Random.Range(0, _inventory.Count);
         _inventoryItem = _inventory[_index];
+        _controlText.enabled = true;
         _bonusUI.enabled = true;
         if (_inventoryItem == "Trap")
         {

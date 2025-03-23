@@ -228,6 +228,81 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 46715227}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &66357715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 66357716}
+  - component: {fileID: 66357718}
+  - component: {fileID: 66357717}
+  m_Layer: 5
+  m_Name: RoundCounterRed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &66357716
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66357715}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.72291136, y: 0.72291136, z: 0.72291136}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 354340424}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -50, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &66357717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66357715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 579398a60b47f4d41a90c214532b48db, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &66357718
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66357715}
+  m_CullTransparentMesh: 1
 --- !u!1 &122176739
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,6 +758,7 @@ MonoBehaviour:
   _desaccelerationFactor: 0.25
   _rotationSpeed: 100
   _bonusUI: {fileID: 1695041791}
+  _controlText: {fileID: 405847110}
   _speedUpImage: {fileID: 21300000, guid: d91513c510b9f3e46a500d0f4700ec3d, type: 3}
   _trapImage: {fileID: 21300000, guid: 872c6e16cdcee764192a52d415b785ba, type: 3}
   _accelerationCurve:
@@ -822,6 +898,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e0d62ee437f1224a9b85cdc93a5502a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roundUI: {fileID: 66357717}
+  _roundSprites:
+  - {fileID: 21300000, guid: 579398a60b47f4d41a90c214532b48db, type: 3}
+  - {fileID: 21300000, guid: af7ad7d5eae98d5478d76a867efb4a6e, type: 3}
+  - {fileID: 21300000, guid: 083ef588f26b3194ea2972e288caa5b1, type: 3}
+  - {fileID: 21300000, guid: 4ff9c3e120769ed48bee4ee2fa26226e, type: 3}
+  - {fileID: 21300000, guid: c35fb0ba140d4974c8c344ac1f67a067, type: 3}
 --- !u!82 &264525287
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1437,6 +1520,8 @@ RectTransform:
   m_Children:
   - {fileID: 1695041790}
   - {fileID: 491644524}
+  - {fileID: 66357716}
+  - {fileID: 1121498241}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3219,6 +3304,81 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1053670177}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1121498240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1121498241}
+  - component: {fileID: 1121498243}
+  - component: {fileID: 1121498242}
+  m_Layer: 5
+  m_Name: RoundCounterBlue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1121498241
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121498240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.72291136, y: 0.72291136, z: 0.72291136}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 354340424}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 50, y: -50}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1121498242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121498240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 579398a60b47f4d41a90c214532b48db, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1121498243
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121498240}
+  m_CullTransparentMesh: 1
 --- !u!1 &1127267230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3980,6 +4140,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e0d62ee437f1224a9b85cdc93a5502a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roundUI: {fileID: 1121498242}
+  _roundSprites:
+  - {fileID: 21300000, guid: 579398a60b47f4d41a90c214532b48db, type: 3}
+  - {fileID: 21300000, guid: af7ad7d5eae98d5478d76a867efb4a6e, type: 3}
+  - {fileID: 21300000, guid: 083ef588f26b3194ea2972e288caa5b1, type: 3}
+  - {fileID: 21300000, guid: 4ff9c3e120769ed48bee4ee2fa26226e, type: 3}
+  - {fileID: 21300000, guid: c35fb0ba140d4974c8c344ac1f67a067, type: 3}
 --- !u!65 &1585908407
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4046,6 +4213,7 @@ MonoBehaviour:
   _desaccelerationFactor: 0.25
   _rotationSpeed: 100
   _bonusUI: {fileID: 491644525}
+  _controlText: {fileID: 1480605992}
   _speedUpImage: {fileID: 21300000, guid: d91513c510b9f3e46a500d0f4700ec3d, type: 3}
   _trapImage: {fileID: 21300000, guid: 872c6e16cdcee764192a52d415b785ba, type: 3}
   _accelerationCurve:

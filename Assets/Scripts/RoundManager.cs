@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoundManager : MonoBehaviour
 {
     private bool _checked = false;
     private int _rounds = 0;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+    [SerializeField]
+    private Image _roundUI;
+    [SerializeField]
+    private List<Sprite> _roundSprites = new List<Sprite>() { };
+
     void Update()
     {
         if (_rounds == 5) //nombre de tour a faire pour gagner
@@ -27,6 +27,10 @@ public class RoundManager : MonoBehaviour
         {
             _checked = false;
             _rounds += 1;
+            if (_rounds < 5)
+            {
+                _roundUI.sprite = _roundSprites[_rounds];
+            }
         }
     }
     private void OnTriggerExit(Collider other)
