@@ -9,6 +9,8 @@ TagManager:
   - MisteryCube
   - RoundChecker
   - StartingLine
+  - CheeseDirectionBeacon
+  - ChickenDirectionBeacon
   layers:
   - Default
   - TransparentFX
