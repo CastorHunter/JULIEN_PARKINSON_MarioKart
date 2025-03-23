@@ -54,6 +54,8 @@ public class CarControler : MonoBehaviour
     [SerializeField]
     private KeyCode _accelerateInputKey, _powerUpInputKey;
 
+    public int roundScore = 0;
+
     void Start()
     {
         _bonusUI.enabled = false;

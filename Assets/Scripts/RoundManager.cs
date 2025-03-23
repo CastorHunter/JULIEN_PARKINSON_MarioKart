@@ -16,10 +16,11 @@ public class RoundManager : MonoBehaviour
 
     void Update()
     {
-        if (rounds == 5) //nombre de tour a faire pour gagner
+        if (rounds == 6) //nombre de tour a faire pour gagner
         {
             SceneManager.LoadScene(2);
         }
+
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -27,7 +28,7 @@ public class RoundManager : MonoBehaviour
         {
             _checked = false;
             rounds += 1;
-            if (rounds < 5)
+            if (rounds < 6)
             {
                 _roundUI.sprite = _roundSprites[rounds];
             }
