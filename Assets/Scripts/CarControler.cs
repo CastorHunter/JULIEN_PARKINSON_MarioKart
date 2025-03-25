@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,11 +18,11 @@ public class CarControler : MonoBehaviour
 
     [Header("UI")]
     [SerializeField]
-    private Image _bonusUI;
+    private Image _bonusUI, _wineSpot1, _wineSpot2, _wineSpot3;
     [SerializeField]
     private TextMeshProUGUI _controlText;
     [SerializeField]
-    private Sprite _speedUpImage, _trapImage;
+    private Sprite _speedUpImage, _trapImage, _wineImage, _forkImage;
 
     [Header("Curves")]
     [SerializeField]
@@ -30,12 +31,16 @@ public class CarControler : MonoBehaviour
     private AnimationCurve _powerSpeedCurve; //courbe de boost de vitesse modifiee dans l'editeur
 
     [Header("Relative to Prefabs")]
-    public TrapBehavior TrapPrefab;
-    public Transform SpawnOffset;
+    [SerializeField]
+    private TrapBehavior _trapPrefab;
+    [SerializeField]
+    private ForkBehavior _forkPrefab;
+    [SerializeField]
+    private Transform _trapSpawnOffset, _forkSpawnOffset;
 
     //Inventory
     private string _inventoryItem = "";
-    private List<string> _inventory = new List<string>() {"Trap", "Boost" };
+    private List<string> _inventory = new List<string>() {"Trap", "Boost", "Wine", "Fork"};
     private int _index;
     private float _terrainSpeedVariator;
 
@@ -44,7 +49,7 @@ public class CarControler : MonoBehaviour
     [SerializeField]
     private float _raycastDistance;
     [SerializeField]
-    private AudioClip _bonk, _yay, _stunned, _trap, _box;
+    private AudioClip _bonk, _yay, _stunned, _trap, _box, _wine, _fork;
     [SerializeField]
     private AudioSource _audioSource, _audioSource2;
     private bool _isPlaying;
@@ -60,6 +65,9 @@ public class CarControler : MonoBehaviour
     {
         _bonusUI.enabled = false;
         _controlText.enabled = false;
+        _wineSpot1.enabled = false;
+        _wineSpot2.enabled = false;
+        _wineSpot3.enabled = false;
     }
 
     void Update()
@@ -95,19 +103,36 @@ public class CarControler : MonoBehaviour
         {
             _isAccelerating = false;
         }
-        if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
+        if (Input.GetKeyDown(_powerUpInputKey))
         {
-            _bonusUI.enabled = false;
-            _controlText.enabled = false;
-            _inventoryItem = "";
-            SpeedPowerUp();
-        }
-        if (Input.GetKeyDown(_powerUpInputKey) && _inventoryItem == "Trap") //pose un piege si le joueur en a en stock
-        {
-            _bonusUI.enabled = false;
-            _controlText.enabled = false;
-            _inventoryItem = "";
-            SpawnTrap();
+            if(_inventoryItem == "Boost") //recois un boost de vitesse si le joueur en a en stock
+            {
+                _bonusUI.enabled = false;
+                _controlText.enabled = false;
+                _inventoryItem = "";
+                SpeedPowerUp();
+            }
+            if (_inventoryItem == "Trap") //pose un piege si le joueur en a en stock
+            {
+                _bonusUI.enabled = false;
+                _controlText.enabled = false;
+                _inventoryItem = "";
+                SpawnTrap();
+            }
+            if (_inventoryItem == "Wine") //place des taches de vin si le joueur en a en stock
+            {
+                _bonusUI.enabled = false;
+                _controlText.enabled = false;
+                _inventoryItem = "";
+                StartCoroutine(WineSpot());
+            }
+            if (_inventoryItem == "Fork") //lance une fourchette si le joueur en a en stock
+            {
+                _bonusUI.enabled = false;
+                _controlText.enabled = false;
+                _inventoryItem = "";
+                SpawnFork();
+            }
         }
         if (_canMove == true)
         {
@@ -180,16 +205,22 @@ public class CarControler : MonoBehaviour
         Mathf.Clamp(transform.rotation.x,-13,13); //clamp la valeur de la rotation pour eviter que le kart prenne des angles innapropries
     }
 
-    public void SpeedPowerUp() //fonction qui definit un boost de vitesse
+    private void SpeedPowerUp() //fonction qui definit un boost de vitesse
     {
         _audioSource.PlayOneShot(_yay, 3f);
         _speedPower = 25;
     }
 
-    public void SpawnTrap() //fonction fait apparaitre un piege
+    private void SpawnTrap() //fonction qui fait apparaitre un piege
     {
         _audioSource.PlayOneShot(_trap, 2f);
-        Instantiate(TrapPrefab, SpawnOffset.position, SpawnOffset.rotation);
+        Instantiate(_trapPrefab, _trapSpawnOffset.position, _trapSpawnOffset.rotation);
+    }
+
+    private void SpawnFork() //fonction qui fait apparaitre une fourchette
+    {
+        _audioSource.PlayOneShot(_fork, 2f);
+        Instantiate(_forkPrefab, _forkSpawnOffset.position, _forkSpawnOffset.rotation);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -206,6 +237,10 @@ public class CarControler : MonoBehaviour
         if (other.CompareTag("MisteryCube")) //si le joueur touche une boite mystère, appelle la fonction correspondante
         {
             ReceiveRandomItem();
+        }
+        if (other.CompareTag("Patch")) //si le joueur touche un patch de vitesse, il recoit un boost de vitesse gratuit
+        {
+            SpeedPowerUp();
         }
     }
 
@@ -224,9 +259,17 @@ public class CarControler : MonoBehaviour
         {
             _bonusUI.sprite = _speedUpImage;
         }
+        if (_inventoryItem == "Wine")
+        {
+            _bonusUI.sprite = _wineImage;
+        }
+        if (_inventoryItem == "Fork")
+        {
+            _bonusUI.sprite = _forkImage;
+        }
     }
 
-    private void Stun() //empeche le joueur de bouger
+    public void Stun() //empeche le joueur de bouger
     {
         _audioSource.PlayOneShot(_stunned);
         _canMove = false;
@@ -234,6 +277,18 @@ public class CarControler : MonoBehaviour
         _speed = 0;
         _isCrazyRotating = true;
         StartCoroutine(CanMove());
+    }
+    private IEnumerator WineSpot() //permet au joueur de bouger apres une duree definie
+    {
+        _audioSource.PlayOneShot(_wine, 2f);
+        _wineSpot1.enabled = true;
+        _wineSpot2.enabled = true;
+        _wineSpot3.enabled = true;
+        yield return new WaitForSeconds(3f);
+        _wineSpot1.enabled = false;
+        _wineSpot2.enabled = false;
+        _wineSpot3.enabled = false;
+
     }
 
     private IEnumerator CanMove() //permet au joueur de bouger apres une duree definie

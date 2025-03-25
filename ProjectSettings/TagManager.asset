@@ -10,6 +10,7 @@ TagManager:
   - RoundChecker
   - StartingLine
   - RoundCheckpoint
+  - Patch
   layers:
   - Default
   - TransparentFX

@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class RoundCheckpointScript : MonoBehaviour
 {
-    [SerializeField]
-    private int _index;
+    public int _index;
 
     [SerializeField]
     private RoundManager _redRoundManager, _blueRoundManager;

@@ -14,6 +14,9 @@ public class RoundManager : MonoBehaviour
     [SerializeField]
     private List<Sprite> _roundSprites = new List<Sprite>() { };
 
+    [SerializeField]
+    private CarControler _carControler;
+
     void Update()
     {
         if (rounds == 6) //nombre de tour a faire pour gagner
@@ -28,6 +31,7 @@ public class RoundManager : MonoBehaviour
         {
             _checked = false;
             rounds += 1;
+            _carControler.roundScore = 0;
             if (rounds < 6)
             {
                 _roundUI.sprite = _roundSprites[rounds];
