@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class RoundManager : MonoBehaviour
 {
@@ -16,12 +17,19 @@ public class RoundManager : MonoBehaviour
 
     [SerializeField]
     private CarControler _carControler;
+    private GameObject _racesRuler;
+    private RacesRulerScript _racesRulerScript;
 
+    private void Start()
+    {
+        _racesRuler = GameObject.Find("RacesRuler");
+        _racesRulerScript = _racesRuler.GetComponent<RacesRulerScript>();
+    }
     void Update()
     {
         if (rounds == 6) //nombre de tour a faire pour gagner
         {
-            SceneManager.LoadScene(2);
+            _racesRulerScript.GiveVictory(gameObject);
         }
 
     }
