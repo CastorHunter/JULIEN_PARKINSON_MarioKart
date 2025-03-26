@@ -18,7 +18,7 @@ public class CarControler : MonoBehaviour
 
     [Header("UI")]
     [SerializeField]
-    private Image _bonusUI, _wineSpot1, _wineSpot2, _wineSpot3;
+    private Image _bonusUI, _wineSpot1, _wineSpot2, _wineSpot3, _arrow;
     [SerializeField]
     private TextMeshProUGUI _controlText;
     [SerializeField]
@@ -79,6 +79,14 @@ public class CarControler : MonoBehaviour
         else
         {
             _blockedByWall = false;
+            if (_speed <= 2 && _canMove == true)
+            {
+                _arrow.enabled = true;
+            }
+            else
+            {
+                _arrow.enabled = false;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) //freine
