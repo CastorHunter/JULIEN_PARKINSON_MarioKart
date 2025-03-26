@@ -26,10 +26,12 @@ public class RacesManager : MonoBehaviour
         if (_racesRulerScript.redVictories == 2 || _racesRulerScript.blueVictories == 2)
         {
             _nextRace.enabled = false;
+            _victory.enabled = true;
         }
         else
         {
             _victory.enabled = false;
+            _nextRace.enabled = true;
         }
     }
 
