@@ -13,9 +13,7 @@ public class RacesManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _redKartScore, _blueKartScore;
     [SerializeField]
-    private Button _nextRace;
-    [SerializeField]
-    private Image _victory;
+    private GameObject _victory, _nextRace;
 
     void Start()
     {
@@ -25,13 +23,13 @@ public class RacesManager : MonoBehaviour
         _redKartScore.GetComponent<TextMeshProUGUI>().text = _racesRulerScript.redVictories.ToString();
         if (_racesRulerScript.redVictories == 2 || _racesRulerScript.blueVictories == 2)
         {
-            _nextRace.enabled = false;
-            _victory.enabled = true;
+            _nextRace.SetActive(false);
+            _victory.SetActive(true);
         }
         else
         {
-            _victory.enabled = false;
-            _nextRace.enabled = true;
+            _victory.SetActive(false);
+            _nextRace.SetActive(true);
         }
     }
 

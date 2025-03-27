@@ -376,8 +376,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _redKartScore: {fileID: 339258592}
   _blueKartScore: {fileID: 972368873}
-  _nextRace: {fileID: 1379836239}
-  _victory: {fileID: 2079578692}
+  _victory: {fileID: 2079578690}
+  _nextRace: {fileID: 1379836237}
 --- !u!1 &648695358
 GameObject:
   m_ObjectHideFlags: 0

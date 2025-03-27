@@ -18,11 +18,11 @@ public class CarControler : MonoBehaviour
 
     [Header("UI")]
     [SerializeField]
-    private Image _bonusUI, _wineSpot1, _wineSpot2, _wineSpot3, _arrow;
+    private Image _bonusUI, _wineSpot1, _wineSpot2, _wineSpot3, _arrow; //image d'UI
     [SerializeField]
-    private TextMeshProUGUI _controlText;
+    private TextMeshProUGUI _controlText; //texte notant la touche a appuyer pour activer le bonus
     [SerializeField]
-    private Sprite _speedUpImage, _trapImage, _wineImage, _forkImage;
+    private Sprite _speedUpImage, _trapImage, _wineImage, _forkImage; //sprites des bonus
 
     [Header("Curves")]
     [SerializeField]
@@ -32,11 +32,11 @@ public class CarControler : MonoBehaviour
 
     [Header("Relative to Prefabs")]
     [SerializeField]
-    private TrapBehavior _trapPrefab;
+    private TrapBehavior _trapPrefab; //relatif au piege
     [SerializeField]
-    private ForkBehavior _forkPrefab;
+    private ForkBehavior _forkPrefab; //relatif a la fourchette
     [SerializeField]
-    private Transform _trapSpawnOffset, _forkSpawnOffset;
+    private Transform _trapSpawnOffset, _forkSpawnOffset; //position ou apparaissent les bonus
 
     //Inventory
     private string _inventoryItem = "";
@@ -47,13 +47,16 @@ public class CarControler : MonoBehaviour
     [SerializeField]
     private LayerMask _WalllayerMask, _WinelayerMask;
     [SerializeField]
-    private float _raycastDistance;
+    private float _raycastDistance; //distance de detection d'un mur
+
+    [Header("Audio")]
     [SerializeField]
     private AudioClip _bonk, _yay, _stunned, _trap, _box, _wine, _fork;
     [SerializeField]
-    private AudioSource _audioSource, _audioSource2;
+    private AudioSource _audioSource, _audioSource2; 
     private bool _isPlaying;
 
+    [Header("Input")]
     [SerializeField]
     private string _rotationInputName;
     [SerializeField]
@@ -63,6 +66,7 @@ public class CarControler : MonoBehaviour
 
     void Start()
     {
+        //desactive les elements d'UI non utiles
         _bonusUI.enabled = false;
         _controlText.enabled = false;
         _wineSpot1.enabled = false;
@@ -72,14 +76,14 @@ public class CarControler : MonoBehaviour
 
     void Update()
     {
-        if (Physics.Raycast(transform.position, transform.forward, out var inf, _raycastDistance, _WalllayerMask))
+        if (Physics.Raycast(transform.position, transform.forward, out var inf, _raycastDistance, _WalllayerMask)) //detecte les murs et stop le joueur si il s'approche trop pres
         {
             StartCoroutine(HitWall());
         }
         else
         {
             _blockedByWall = false;
-            if (_speed <= 2 && _canMove == true)
+            if (_speed <= 2 && (_canMove == true && _isSlowing == false))
             {
                 _arrow.enabled = true;
             }
@@ -150,12 +154,12 @@ public class CarControler : MonoBehaviour
         {
             transform.eulerAngles += Vector3.down * _rotationSpeed * 2.4f * Time.deltaTime;
         }
-        if (_speed>1 && _isPlaying == false)
+        if (_speed>1 && _isPlaying == false) //bruit de moteur (lancement)
         {
             _isPlaying = true;
             _audioSource2.Play();
         }
-        else if (_speed<1 && _isPlaying == true)
+        else if (_speed<1 && _isPlaying == true) //bruit de moteur
         {
             _isPlaying = false;
             _audioSource2.Pause();
